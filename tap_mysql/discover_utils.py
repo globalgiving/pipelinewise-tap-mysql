@@ -30,6 +30,7 @@ pymysql.converters.conversions[pendulum.Pendulum] = pymysql.converters.escape_da
 STRING_TYPES = {
     'char',
     'enum',
+    'set',
     'tinytext',
     'longtext',
     'mediumtext',
