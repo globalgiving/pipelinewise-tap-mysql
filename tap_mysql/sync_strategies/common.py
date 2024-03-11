@@ -4,6 +4,7 @@ import copy
 import datetime
 import singer
 import time
+import re
 
 from singer import metadata, utils, metrics
 
@@ -108,6 +109,11 @@ def row_to_singer_record(catalog_entry, version, row, columns, time_extracted):
                 epoch = datetime.datetime.utcfromtimestamp(0)
                 timedelta_from_epoch = epoch + elem
                 row_to_persist += (timedelta_from_epoch.isoformat() + '+00:00',)
+
+        elif isinstance(elem, str) \
+                and bool(re.compile("\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$").search(elem)) \
+                and 'string' in property_type:
+            row_to_persist += (None,)
 
         elif 'boolean' in property_type or property_type == 'boolean':
             if elem is None:
